@@ -1,28 +1,20 @@
 package com.rutkoski.hrpayroll.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.rutkoski.hrpayroll.feignclients.WorkerFeignClient;
 import com.rutkoski.hrpayroll.model.Payment;
 import com.rutkoski.hrpayroll.model.Worker;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class PaymentService {
-    @Value("${hr-worker.host}")
-    private String workerHost;
-
     @Autowired
-    private RestTemplate restTemplate;
+    private WorkerFeignClient workerFeignClient;
+    
 
     public Payment getPayment(Long workerId, int days){
-        Map<String, String> paremeters = new HashMap<>();
-        paremeters.put("id", workerId.toString());
-
-        Worker worker = restTemplate.getForObject(workerHost + "/workers/{id}", Worker.class, paremeters);
+        Worker worker = workerFeignClient.findById(workerId).getBody();
         if(worker == null){
             return null;
         }
