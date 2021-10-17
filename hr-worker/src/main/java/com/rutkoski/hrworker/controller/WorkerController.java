@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import com.rutkoski.hrworker.repositories.WorkerRepository;
 
 @RestController
 @RequestMapping(value = "/workers")
+@RefreshScope
 public class WorkerController {
 	private static Logger logger = org.slf4j.LoggerFactory.getLogger(WorkerController.class);
 	
